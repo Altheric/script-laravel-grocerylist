@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 
 class ItemController extends Controller
 {
@@ -28,10 +29,21 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // De Request class wordt vervangen door de StoreItemRequest
+    public function store(StoreItemRequest $request) {
+    // Haalt de gevalideerde gegevens op uit de StoreItemRequest class
+    $validated = $request->validated();
+
+    $item = new Item();
+
+    // Stelt de 'name' en 'description' waarden in op het gevalideerde gegevens
+    $item->name = $validated['name'];
+    $item->description = $validated['description'];
+
+    $item->save();
+
+    return redirect()->route('items.index');
+}
 
     /**
      * Display the specified resource.
@@ -44,24 +56,34 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit($id) {
+        $item = Item::find($id);
+        return view('items.edit', compact('item'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // De Request class wordt vervangen door de UpdateItemRequest
+    public function update(UpdateItemRequest $request, Item $item) {
+    // Haalt de gevalideerde gegevens op uit de UpdateItemRequest class
+    $validated = $request->validated();
+
+    // Stelt de 'name' en 'description' waarden in op het gevalideerde gegevens
+    $item->name = $validated['name'];
+    $item->description = $validated['description'];
+
+    $item->save();
+
+    return redirect()->route('items.index');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Item $item) {
+        $item->delete();
+        return redirect()->route('items.index');
     }
 }
