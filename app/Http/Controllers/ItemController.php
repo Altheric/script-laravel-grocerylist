@@ -33,10 +33,9 @@ class ItemController extends Controller
     // De Request class wordt vervangen door de StoreItemRequest
     public function store(StoreItemRequest $request) {
         $validated = $request->validated();
-    
         // Maakt een nieuw item aan met de gevalideerde gegevens
         Item::create($validated);
-    
+
         return redirect()->route('items.index');
     }
     

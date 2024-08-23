@@ -20,7 +20,7 @@
         <td>{{ $item->description }}</td>
         <td>{{ $item->category->name }}</td>
         <td>
-            <a href="{{ route('items.edit', $item->id) }}">Bewerken</a>
+            <a href="{{ route('items.edit', $item) }}">Bewerken</a>
         </td>
         <td>
             <form action="{{ route('items.destroy', $item->id) }}" method="POST">
